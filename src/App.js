@@ -5,7 +5,7 @@ import asset2 from './assets/2.jpeg';
 import asset3 from './assets/3.jpeg';
 import asset4 from './assets/4.png';
 
-import './App.css';
+import styles from './App.css';
 
 function App() {
   const imgList = [{src:asset1, type: 'video'}, {src:asset2, type: 'img'}, {src: asset3, type: 'img'}, {src: asset4, type: 'img'}];
@@ -20,7 +20,7 @@ function App() {
                   <ImgViewer
                     src={item.src}
                     type={item.type}
-                    className="img"
+                    className={styles.img}
                   />
                 </div>
             )
