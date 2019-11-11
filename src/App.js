@@ -1,24 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
+import ImgViewer from './components/ImgViewer';
+import asset1 from './assets/video.mp4';
+import asset2 from './assets/2.jpeg';
+import asset3 from './assets/3.jpeg';
+import asset4 from './assets/4.png';
+
 import './App.css';
 
 function App() {
+  const imgList = [{src:asset1, type: 'video'}, {src:asset2, type: 'img'}, {src: asset3, type: 'img'}, {src: asset4, type: 'img'}];
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div>Example</div>
+      <div>
+        {
+          imgList.map(item => {
+            return (
+                <div>
+                  <ImgViewer
+                    src={item.src}
+                    type={item.type}
+                    className="img"
+                  />
+                </div>
+            )
+          })
+        }
+      </div>
     </div>
   );
 }
