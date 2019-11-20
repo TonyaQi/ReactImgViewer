@@ -1,7 +1,22 @@
 .App {
   padding: 32px;
 }
-.img{
+.block{
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 200px;
   height: 200px;
+  border: 1px solid #F2F2F2;
+  border-radius: 4px;
+  margin-right: 30px;
+  text-align: center;
+}
+.img{
+  max-width: 200px;
+  max-height: 200px;
+  cursor: pointer;
+}
+.list{
+  display: flex;
 }

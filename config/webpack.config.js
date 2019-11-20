@@ -45,8 +45,8 @@ const imageInlineSizeLimit = parseInt(
 const useTypeScript = fs.existsSync(paths.appTsConfig);
 
 // style files regexes
-const cssRegex = /\.css$/;
-const cssModuleRegex = /\.module\.css$/;
+const cssRegex = /\.(css|less)$/;
+const cssModuleRegex = /\.module\.(css|less)$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
 const lessRegex = /\.less$/;
@@ -358,30 +358,6 @@ module.exports = function(webpackEnv) {
           include: paths.appSrc,
         },
         {
-          test: lessRegex,
-          exclude: lessModuleRegex,
-          use: getStyleLoaders(
-              {
-                importLoaders: 2,
-                sourceMap: isEnvProduction && shouldUseSourceMap,
-              },
-              'less-loader'
-          ),
-          sideEffects: true,
-        },
-        {
-          test: lessModuleRegex,
-          use: getStyleLoaders(
-              {
-                importLoaders: 2,
-                sourceMap: isEnvProduction && shouldUseSourceMap,
-                modules: true,
-                getLocalIdent: getCSSModuleLocalIdent,
-              },
-              'less-loader'
-          )
-        },
-        {
           // "oneOf" will traverse all following loaders until one will
           // match the requirements. When no loader matches it will fall
           // back to the "file" loader at the end of the loader list.
@@ -471,7 +447,9 @@ module.exports = function(webpackEnv) {
                 importLoaders: 1,
                 modules: true,
                 sourceMap: isEnvProduction && shouldUseSourceMap,
-              }),
+              },
+                  "less-loader"
+              ),
               // Don't consider CSS imports dead code even if the
               // containing package claims to have no side effects.
               // Remove this when webpack adds a warning or an error for this.
