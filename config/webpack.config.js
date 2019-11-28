@@ -119,6 +119,12 @@ module.exports = function(webpackEnv) {
           sourceMap: isEnvProduction && shouldUseSourceMap,
         },
       },
+      {
+        loader: require.resolve('less-loader'),
+        options: {
+          sourceMap: true,
+        },
+      }
     ].filter(Boolean);
     if (preProcessor) {
       loaders.push(
@@ -447,7 +453,8 @@ module.exports = function(webpackEnv) {
                 importLoaders: 1,
                 modules: true,
                 sourceMap: isEnvProduction && shouldUseSourceMap,
-              },
+                localIdentName: '[name]__[local]__[hash:base64:5]'
+                  },
                   "less-loader"
               ),
               // Don't consider CSS imports dead code even if the

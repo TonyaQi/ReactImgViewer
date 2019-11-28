@@ -15,7 +15,7 @@ class MediaViewer extends React.Component{
         let mediaList = document.querySelectorAll(`[data-group=${imgGroupKey}]`);
         let srcList = [];
         mediaList.forEach(item => {
-            srcList.push(item.getAttribute('src'))
+            srcList.push({src: item.getAttribute('src'), type: item.localName})
         });
 
         const div = document.createElement('div');
@@ -28,7 +28,7 @@ class MediaViewer extends React.Component{
             }
         };
 
-        ReactDom.render(<MediaWindow onClose={onClose}/>, div);
+        ReactDom.render(<MediaWindow onClose={onClose} srcList={srcList} {...this.props}/>, div);
     };
 
     render() {
