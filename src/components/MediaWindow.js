@@ -7,7 +7,11 @@ class MediaWindow extends React.Component{
 
         this.state = {
             src: props.src,
-            type: props.type
+            type: props.type,
+            scale: 1,
+            translateX: 0,
+            translateY: 0,
+            drag: false
         }
     }
 
@@ -48,7 +52,7 @@ class MediaWindow extends React.Component{
     nextMedia = (e) => {
         e.stopPropagation();
         let currentIndex = this.props.srcList.findIndex(item => item.src === this.state.src);
-        if(currentIndex === this.props.srcList.length) return;
+        if(currentIndex >= this.props.srcList.length - 1) return;
         this.setState({
             src: this.props.srcList[currentIndex + 1].src,
             type: this.props.srcList[currentIndex + 1].type,
@@ -58,14 +62,87 @@ class MediaWindow extends React.Component{
         })
     };
 
+    zoom = (e) => {
+        if(!this.area) return;
+        if(e.deltaY + e.deltaX < 0)
+            {
+                let scale = this.state.scale > 10 ? this.state.scale : this.state.scale * 1.1;
+                this.area.style.transform = `scale(${scale}) translate(${this.state.translateX}px, ${this.state.translateY}px)`;
+                this.setState({
+                    scale: scale
+                });
+            }
+        else
+            {
+                let scale = this.state.scale < 0.2 ? this.state.scale : this.state.scale * 0.9;
+                this.area.style.transform = `scale(${scale}) translate(${this.state.translateX}px, ${this.state.translateY}px)`;
+                this.setState({
+                    scale: scale
+                });
+            }
+
+        e.stopPropagation();
+        if (e.cancelable) {
+            // 判断默认行为是否已经被禁用
+            if (!e.defaultPrevented) {
+                e.preventDefault();
+            }
+        } else {
+            e.returnValue = false
+        }
+    };
+
+    handleMouseDown = (e) => {
+        if (e.button !== 0) {
+            return;
+        }
+        if (this.area) {
+            this.setState({
+                drag: true,
+                mouseX: e.clientX,
+                mouseY: e.clientY
+            });
+        }
+    };
+
+    handleMouseMove = (e) => {
+        if(!this.state.drag) return;
+        this.area.style.transform = `scale(${this.state.scale}) translate(${(this.state.translateX + e.clientX - this.state.mouseX) / this.state.scale}px, ${(this.state.translateY + e.clientY - this.state.mouseY) / this.state.scale}px)`;
+
+        this.setState({
+            translateX: this.state.translateX + e.clientX - this.state.mouseX,
+            translateY: this.state.translateY + e.clientY - this.state.mouseY,
+            mouseX: e.clientX,
+            mouseY: e.clientY
+        })
+    };
+
+    handleMouseUp = (e) => {
+        this.setState({
+            drag: false,
+        });
+        e.stopPropagation();
+        e.preventDefault();
+    };
+
     render() {
         const {onClose, srcList} = this.props;
         const {src, type} = this.state;
         return (
-            <div className={styles.mask} onClick={onClose}>
-                <div className={styles.row}>
+            <div className={styles.mask}
+                 onClick={onClose}
+                 onWheel={this.zoom}
+            >
+                <div
+                    className={styles.row}
+                    onMouseMove={this.handleMouseMove}
+                >
                     <div className={styles.last} onClick={this.lastMedia}>{`<`}</div>
-                    <div className={styles.media}>
+                    <div
+                        id={'show'}
+                        className={styles.media}
+                        ref={area => this.area = area}
+                    >
                         {
                             type === 'video' ? (
                                 <video
@@ -75,6 +152,12 @@ class MediaWindow extends React.Component{
                             ) : (
                                 <img
                                     src={src}
+                                    draggable={false}
+                                    onClick={(e) => {e.stopPropagation()}}
+                                    onMouseDown={this.handleMouseDown}
+                                    onMouseMove={this.handleMouseMove}
+                                    onMouseUp={this.handleMouseUp}
+                                    ref={img => this.img = img}
                                 />
                             )
                         }
