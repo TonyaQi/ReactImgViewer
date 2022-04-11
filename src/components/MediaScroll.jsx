@@ -55,26 +55,54 @@ class MediaScroll extends React.Component{
         // setPlayQue(curQue);
         // setWrapperTransform(-1 * nextCurrent.transformCountIndex * transformUnit);
         // setPlayingIndex((current.index + (1 + videoList.length) * step) % videoList.length);
-        console.log(111);
-        let oprIndex = 0;
-        let cque = [...this.state.que];
-        // let lastTransform = cque[this.state.flag]
-        if(this.state.flag === -1) {
-            oprIndex = 2;
-        } else {
-            oprIndex = (this.state.flag + 2) % 3
-        }
-        cque[oprIndex] = {
-            src: (this.props.srcList[(this.state.curIndex + 1) % 3] || {}).src,
-            transform: this.state.curTransform - 488 * 2
-        }
-        console.log(cque[oprIndex]);
-        this.setState(pre => ({
-            que: cque,
-            curTransform: pre.curTransform + 488,
-            curIndex: pre.curIndex - 1,
-            flag: oprIndex
-        }))
+        // console.log(111);
+        // let oprIndex = 0;
+        // let cque = [...this.state.que];
+        // // let lastTransform = cque[this.state.flag]
+        // if(this.state.flag === -1) {
+        //     oprIndex = 2;
+        // } else {
+        //     oprIndex = (this.state.flag + 2) % 3
+        // }
+        // cque[oprIndex] = {
+        //     src: (this.props.srcList[(this.state.curIndex + 1) % 3] || {}).src,
+        //     transform: this.state.curTransform - 488 * 2
+        // }
+        // console.log(cque[oprIndex]);
+        this.setState(pre => {
+            const firstBlock = pre.que[0];
+            const curBlock = pre.que[1];
+            const newFirstBlock = this.props.srcList[((pre.curIndex + this.props.srcList.length) - 2) % this.props.srcList.length];
+            
+            newFirstBlock.transform = pre.que[0].transform - 488;
+            return (
+                {
+                    que: [newFirstBlock, firstBlock, curBlock],
+                    curTransform: pre.curTransform + 488,
+                    curIndex: pre.curIndex - 1,
+                    // flag: oprIndex
+                }
+            )
+        })
+    }
+
+    goNext = () => {
+        this.setState(pre => {
+            const firstBlock = pre.que[0];
+            const curBlock = pre.que[1];
+            const lastBlock = pre.que[2];
+            const newlastBlock = this.props.srcList[((pre.curIndex + this.props.srcList.length) - 2) % this.props.srcList.length];
+            
+            newlastBlock.transform = pre.que[2].transform + 488;
+            return (
+                {
+                    que: [curBlock, lastBlock, newlastBlock],
+                    curTransform: pre.curTransform - 488,
+                    curIndex: pre.curIndex + 1,
+                    // flag: oprIndex
+                }
+            )
+        })
     }
 
     render(){
