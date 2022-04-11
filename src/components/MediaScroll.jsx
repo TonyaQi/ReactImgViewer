@@ -29,6 +29,32 @@ class MediaScroll extends React.Component{
     };
 
     goBack = () => {
+        // let curQue = [...playQue];
+        // // 当前正在播放的视图的引用
+        // const current = curQue.find(item => item.index === playingIndex)    
+        // // 即将播放的视图的引用
+        // const nextCurrent = curQue.find(item => item.index === (playingIndex + step) % videoList.length);   
+        // // 获取需要淘汰的视图的引用
+        // let oldItem = curQue.find(item => item.index === (playingIndex - step) % videoList.length);
+        // console.log(oldItem);
+
+        // // 获取即将加入队列的视图的引用
+        // let newItem = videoList[(playingIndex + step * (2 + videoList.length)) % videoList.length]
+        // console.log(newItem);
+        
+        // // 覆盖
+        // oldItem.src = newItem?.src;
+        // oldItem.key = newItem?.key;
+
+        // // 覆盖后的index为即将播放视图index的下2个 【0 1 2】3 4 (1 + 2) % 4 = 3 
+        // oldItem.index = (playingIndex + step * (2 + videoList.length)) % videoList.length;
+        // // 覆盖后的移动步数为当前播放视图的下2步
+        // oldItem.transformCountIndex = (current.transformCountIndex + step * (2 + videoList.length)) % videoList.length * step;
+
+        // console.log(curQue);
+        // setPlayQue(curQue);
+        // setWrapperTransform(-1 * nextCurrent.transformCountIndex * transformUnit);
+        // setPlayingIndex((current.index + (1 + videoList.length) * step) % videoList.length);
         console.log(111);
         let oprIndex = 0;
         let cque = [...this.state.que];

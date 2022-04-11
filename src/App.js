@@ -1,5 +1,5 @@
 import React from 'react';
-import MediaViewer from './components/MediaViewer';
+import MediaViewer from './components/MediaViewers.jsx';
 import asset1 from './assets/video.mp4';
 import asset2 from './assets/2.jpeg';
 import asset3 from './assets/3.jpeg';
